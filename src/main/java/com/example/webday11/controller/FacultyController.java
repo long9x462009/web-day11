@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.webday11.dto.FacultyDTO;
 import com.example.webday11.entity.Faculty;
 import com.example.webday11.service.FacultyService;
+import com.example.webday11.transform.FacultyTransform;
 
 @RestController
 @RequestMapping("/faculties")
@@ -19,7 +21,9 @@ public class FacultyController {
 	}
 
 	@GetMapping("/{id}")
-	public Faculty findById(@PathVariable int id) {
-		return facultyService.findById(id);
+	public FacultyDTO findById(@PathVariable int id) {
+		Faculty faculty = facultyService.findById(id);
+		FacultyTransform transform = new FacultyTransform();
+		return transform.apply(faculty);
 	}
 }

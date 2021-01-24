@@ -1,7 +1,8 @@
 package com.example.webday11.repository.impl;
 
-import javax.persistence.EntityManager;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.webday11.entity.Student;
@@ -9,15 +10,18 @@ import com.example.webday11.repository.StudentRepository;
 
 @Repository
 public class StudentRepositoryImpl implements StudentRepository {
-	private EntityManager em;
 
-	public StudentRepositoryImpl(EntityManager em) {
-		this.em = em;
+	private SessionFactory sessionFactory;
+
+	@Autowired
+	public StudentRepositoryImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
 	public Student findById(int id) {
-		return em.find(Student.class, id);
+		Session session = sessionFactory.getCurrentSession();
+		return session.find(Student.class, id);
 	}
 
 }
